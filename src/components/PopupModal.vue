@@ -29,8 +29,16 @@
                         <tr>
                             <td><img @click="showModal(item)" class="flag" :src=modalInfo.flags.png /></td>
                             <td>{{ modalInfo.name.official }}</td>
-                            <td>{{ modalInfo.name.official }}</td>
-                            <td>{{ modalInfo.altSpellings[0] }}</td>
+                            <td>
+                                <span v-for="(name, index) in modalInfo.name.nativeName" v-bind:key="index" class="alterName">
+                                    <span>{{ name.official }}</span>
+                                </span>
+                            </td>
+                            <td>
+                                <span v-for="(name, index) in modalInfo.altSpellings" v-bind:key="index" class="alterName">
+                                    <span>{{ name }}</span>
+                                </span>
+                            </td>
                             <td>{{ modalInfo.cca2 }}</td>
                             <td>{{ modalInfo.cca3 }}</td>
                             <td>{{ modalInfo.idd.root + modalInfo.idd.suffixes[0] }}</td>

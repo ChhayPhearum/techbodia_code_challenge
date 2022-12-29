@@ -25,7 +25,7 @@
         <hr />
         <div class="row">
             <div class="col-md-12">
-                <nav class="float-end" aria-label="Page navigation example">
+                <nav class="float-end" aria-label="Page navigation example" v-show="!searchString">
                     <ul class="pagination">
                         <li class="page-item"><a class="page-link" @click="pagePrvious" href="#">Previous</a></li>
                         <li v-for="index in totalPage" :key="index" class="page-item" :class="{ active: index == currrentPage }"><a @click="pagination(index)" class="page-link" href="#">{{ index }}</a></li>
@@ -55,16 +55,27 @@
                             <tr v-for="(item , index) in customCountries" v-bind:key="index">
                                 <td><img @click="showModal(item)" class="flag" :src=item.flags.png /></td>
                                 <td>{{ item.name.official }}</td>
-                                <td>{{ item.name.official }}</td>
-                                <td>{{ item.altSpellings[0] }}</td>
+                                <td>
+                                    <span v-for="(name, index) in item.name.nativeName" v-bind:key="index" class="alterName">
+                                        <span>{{ name.official }}</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span v-for="(name, index) in item.altSpellings" v-bind:key="index" class="alterName">
+                                        <span>{{ name }}</span>
+                                    </span>
+                                </td>
                                 <td>{{ item.cca2 }}</td>
                                 <td>{{ item.cca3 }}</td>
                                 <td>{{ item.idd.root + item.idd.suffixes[0] }}</td>
                             </tr>
+                            <tr v-show="customCountries.length == 0">
+                                <td colspan="7"> No data </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <nav class="float-end" aria-label="Page navigation example">
+                <nav class="float-end" aria-label="Page navigation example" v-show="!searchString">
                     <ul class="pagination">
                         <li class="page-item"><a class="page-link" @click="pagePrvious" href="#">Previous</a></li>
                         <li v-for="index in totalPage" :key="index" class="page-item" :class="{ active: index == currrentPage }"><a @click="pagination(index)" class="page-link" href="#">{{ index }}</a></li>
@@ -113,6 +124,9 @@ export default {
         }
     },
     methods: {
+        nameNative(obj) {
+            console.log(obj)
+        },
         isSort(type){
             switch (type) {
                 case "asc":
@@ -183,8 +197,7 @@ export default {
 .flag:hover {
     cursor: pointer
 }
-.country_name {
-    font-size: 14px;
-    color: gray;
+.alterName + .alterName:before {
+    content: ", ";
 }
 </style>
